@@ -1,6 +1,12 @@
+import Navbar from "../components/navbar";
+
 function App() {
-  return <h1>Mh blog</h1>;
-};
+	return (
+		<nav className='navbar'>
+			{/* <img src={logo} className='w-10 flex-none' /> */}
+			<Navbar />
+		</nav>
+	);
+}
 
 export default App;
-
