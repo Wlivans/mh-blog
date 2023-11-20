@@ -1,8 +1,5 @@
 module.exports = {
-	env: {
-		browser: true,
-		es2021: true,
-	},
+	env: { browser: true, es2021: true },
 	extends: [
 		"eslint:recommended",
 		"plugin:@typescript-eslint/recommended",
@@ -39,6 +36,12 @@ module.exports = {
 				"@typescript-eslint/triple-slash-reference": 0,
 				"no-use-before-define": "off",
 				"@typescript-eslint/no-use-before-define": "off",
+				"prettier/prettier": [
+					"warn",
+					{
+						singleQuote: true,
+					},
+				],
 			},
 		},
 	],
