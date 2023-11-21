@@ -1,7 +1,12 @@
 {
 	"search": "搜索",
 	"write": "编写",
+	"welcome": "欢迎回来",
+	"joinUs": "加入我们",
 	"user": {
+		"fullName": "用户名",
+		"email": "邮箱",
+		"password": "密码",
 		"signIn": "登录",
 		"signUp": "注册"
 	}

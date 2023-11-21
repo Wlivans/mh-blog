@@ -1,7 +1,12 @@
 {
 	"search": "Search",
 	"write": "Write",
+	"welcome": "Welcome back",
+	"joinUs": "Join us today",
 	"user": {
+		"fullName": "Full name",
+		"email": "Email",
+		"password": "Password",
 		"signIn": "Sign In",
 		"signUp": "Sign Up"
 	}
