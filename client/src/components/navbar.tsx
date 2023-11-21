@@ -3,7 +3,8 @@ import logo from "../images/logo.png";
 import { FileEdit, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useState } from "react";
-import { cn } from "@/libs/utils";
+import { cn } from "@/lib/utils";
+import { Button } from "./ui/button";
 
 const Navbar = () => {
 	const { t } = useTranslation();
@@ -34,24 +35,26 @@ const Navbar = () => {
 					<Search className="absolute right-[10%] top-1/2 h-6 w-6 -translate-y-3 text-2xl text-dark-grey md:pointer-events-none md:left-5" />
 				</div>
 
-				<div className="ml-auto flex items-center gap-3 md:gap-6">
-					<button
-						onClick={handleShowSearchBox}
-						className="md:hiddeen flex h-12 w-12 items-center justify-center rounded-full bg-grey">
-						<Search className="h-6 w-6 text-2xl" />
-					</button>
+				<div className="ml-auto flex items-center gap-x-2">
+					<Button variant="ghost" onClick={handleShowSearchBox} className="md:hiddeen">
+						<Search className="default-icon" />
+					</Button>
 
-					<Link to="/editor" className="link hidden gap-2 rounded md:flex">
-						<FileEdit />
-						<p>{t("write")}</p>
+					<Link to="/editor" className="link hidden rounded md:flex">
+						<Button variant="ghost" className="gap-2">
+							<FileEdit className="default-icon" />
+							<p className="text-sm">{t("write")}</p>
+						</Button>
 					</Link>
 
-					<Link to="/signin" className="btn-dark py-2">
-						{t("user.signIn")}
+					<Link to="/signin" className="btn-dark">
+						<Button variant="ghost" size="sm">
+							{t("user.signIn")}
+						</Button>
 					</Link>
 
-					<Link to="/signup" className="btn-light hidden py-2 md:block">
-						{t("user.signUp")}
+					<Link to="/signup" className="btn-light hidden md:block">
+						<Button size="sm">{t("user.signUp")}</Button>
 					</Link>
 				</div>
 			</nav>
