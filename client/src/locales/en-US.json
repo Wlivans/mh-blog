@@ -2,7 +2,14 @@
 	"search": "Search",
 	"write": "Write",
 	"welcome": "Welcome back",
-	"joinUs": "Join us today",
+	"or": "or",
+	"account": {
+		"joinUs": "Join us today",
+		"havaAccount": "Don't hava an account",
+		"alreadyMember": "Already a member",
+		"signHere": "Sign in here",
+		"google": "continue with google"
+	},
 	"user": {
 		"fullName": "Full name",
 		"email": "Email",

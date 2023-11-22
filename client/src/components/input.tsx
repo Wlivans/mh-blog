@@ -2,10 +2,10 @@ import { Eye, EyeOff, LucideIcon } from "lucide-react";
 import { useState } from "react";
 
 type InputBoxProps = {
-	id: string;
+	id?: string;
 	name: string;
 	type?: string;
-	value: string;
+	value?: string;
 	placeholder?: string;
 	icon?: LucideIcon;
 };

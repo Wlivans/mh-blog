@@ -2,7 +2,14 @@
 	"search": "搜索",
 	"write": "编写",
 	"welcome": "欢迎回来",
-	"joinUs": "加入我们",
+	"or": "或",
+	"account": {
+		"joinUs": "加入我们",
+		"havaAccount": "需要新的账号",
+		"alreadyMember": "已有账号",
+		"signHere": "点击登录",
+		"google": "使用google账号登录"
+	},
 	"user": {
 		"fullName": "用户名",
 		"email": "邮箱",
