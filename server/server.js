@@ -1,19 +1,50 @@
 import express from "express";
 import mongoose from "mongoose";
 import "dotenv/config";
+import bcrypt from "bcrypt";
+import User from "./Schema/User.js";
+import { nanoid } from "nanoid";
+import jwt from "jsonwebtoken";
 
 const server = express();
 const PORT = 8888;
 
 const emailRegex = /^[^\u4e00-\u9fa5]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/; // regex for email
-const passwordRegex =
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*]).{8,20}$/; // regex for password
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/; // regex for password
 
 server.use(express.json());
 
 mongoose.connect(process.env.DB_LOCATION, {
   autoIndex: true,
 });
+
+const formatDatatoSend = (user) => {
+  const access_token = jwt.sign(
+    { id: user._id },
+    process.env.SECRET_ACCESS_KEY
+  );
+
+  return {
+    access_token,
+    profile_img: user.personal_info.profile_img,
+    username: user.personal_info.username,
+    fullname: user.personal_info.fullname,
+  };
+};
+
+const generateHash = async (email) => {
+  let username = email.split("@")[0];
+
+  const usernameExists = await User.exists({
+    "personal_info.username": username,
+  }).then((res) => res);
+
+  username = usernameExists
+    ? `${username}#${nanoid().substring(0, 5)}`
+    : username;
+
+  return username;
+};
 
 server.post("/signup", (req, res) => {
   const { fullname, email, password } = req.body;
@@ -33,10 +64,60 @@ server.post("/signup", (req, res) => {
     });
   }
 
-  return res.status(200).json({
-    statusCode: 200,
-    message: "okey",
-    success: true,
+  if (!emailRegex.test(email)) {
+    return res.status(403).json({
+      statusCode: 403,
+      message: "Email is invalid",
+      success: false,
+    });
+  }
+
+  if (!passwordRegex.test(password)) {
+    return res.status(403).json({
+      statusCode: 403,
+      message:
+        "Password is invalid, Password should be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters",
+      success: false,
+    });
+  }
+
+  bcrypt.hash(password, 10, async (err, hashed_password) => {
+    const username = await generateHash(email);
+    console.log(username);
+    let user = new User({
+      personal_info: {
+        fullname,
+        username,
+        email,
+        password: hashed_password,
+      },
+    });
+
+    user
+      .save()
+      .then((u) => {
+        return res.status(200).json({
+          statusCode: 200,
+          data: formatDatatoSend(u),
+          message: "okey",
+          success: true,
+        });
+      })
+      .catch((err) => {
+        if (err.code === 11000) {
+          return res.status(500).json({
+            statusCode: 500,
+            message: "Email already exist",
+            success: false,
+          });
+        }
+
+        return res.status(500).json({
+          statusCode: 500,
+          message: err.message,
+          success: false,
+        });
+      });
   });
 });
 
