@@ -4,6 +4,9 @@ import { useTranslation } from "react-i18next";
 import googleIcon from "../images/google.png";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "@/common/pageAnimation";
+import { useRef } from "react";
+import { Toaster, toast } from "react-hot-toast";
+import { EMAIL_REGEX, PASSWORD_REGEX } from "@/libs/types";
 
 type UserAuthFormProps = {
 	type: "signIn" | "signUp";
@@ -12,11 +15,43 @@ type UserAuthFormProps = {
 const UserAuthForm = ({ type }: UserAuthFormProps) => {
 	const { t } = useTranslation();
 
+	const authFormRef = useRef<HTMLFormElement | null>(null);
+
+	const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+		e.preventDefault();
+
+		const form = new FormData(authFormRef?.current!);
+		const formData: any = {};
+
+		for (let [key, value] of form.entries()) {
+			formData[key] = value;
+		}
+
+		const { fullname, email, password } = formData;
+
+		if (type === "signUp" && fullname.length < 3) {
+			return toast.error(t("regex.fullname_length"));
+		}
+
+		if (!email?.length) {
+			return toast.error(t("regex.email_length"));
+		}
+
+		if (!EMAIL_REGEX.test(email)) {
+			return toast.error(t("regex.email"));
+		}
+
+		if (!PASSWORD_REGEX.test(password)) {
+			return t("regex.password");
+		}
+	};
+
 	return (
 		<AnimationWrapper keyValue={type}>
 			<section className="h-cover flex items-center justify-center">
-				<form className="w-[80%] max-w-[400px]">
-					<h1 className="font-gelasio mb-24 text-4xl capitalize">
+				<Toaster />
+				<form ref={authFormRef} className="w-[80%] max-w-[400px]">
+					<h1 className="mb-24 font-gelasio text-4xl capitalize">
 						{t(type === "signIn" ? "welcome" : "account.joinUs")}
 					</h1>
 
@@ -33,7 +68,7 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
 						icon={KeyRound}
 					/>
 
-					<button className="btn-dark center mt-14" type="submit">
+					<button className="btn-dark center mt-14" type="submit" onClick={handleSubmit}>
 						{t(`user.${type}`)}
 					</button>
 

@@ -16,5 +16,11 @@
 		"password": "密码",
 		"signIn": "登录",
 		"signUp": "注册"
+	},
+	"regex": {
+		"fullname_length": "用户名长度至少为 3 个字母",
+		"email_length": "请输入电子邮箱",
+		"email": "输入的电子邮箱有误",
+		"password": "密码有误，密码长度应为 8 至 20 个字符，包含数字、1 个小写字母和 1 个大写字母"
 	}
 }

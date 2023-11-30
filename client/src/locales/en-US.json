@@ -16,5 +16,11 @@
 		"password": "Password",
 		"signIn": "Sign In",
 		"signUp": "Sign Up"
+	},
+	"regex": {
+		"fullname_length": "Fullname must be at least 3 letters long",
+		"email_length": "Please Enter Email",
+		"email": "Email is invalid",
+		"password": "Password is invalid, Password should be 8 to 20 characters long with a numeric, 1 lowercase and 1 uppercase letters"
 	}
 }
