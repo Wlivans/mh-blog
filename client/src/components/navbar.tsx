@@ -1,4 +1,4 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import logo from "../images/logo.png";
 import { FileEdit, Search } from "lucide-react";
 import { useTranslation } from "react-i18next";
@@ -7,6 +7,7 @@ import { cn } from "@/libs/utils";
 
 const Navbar = () => {
 	const { t } = useTranslation();
+	const location = useLocation();
 
 	const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
 
@@ -46,11 +47,21 @@ const Navbar = () => {
 						<p>{t("write")}</p>
 					</Link>
 
-					<Link to="/signin" className="btn-dark py-2">
+					<Link
+						to="/signin"
+						className={cn(
+							"btn-dark py-2",
+							location.pathname.substring(1) === "signIn" && "hidden",
+						)}>
 						{t("user.signIn")}
 					</Link>
 
-					<Link to="/signup" className="btn-light hidden py-2 md:block">
+					<Link
+						to="/signup"
+						className={cn(
+							"btn-light hidden py-2 md:block",
+							location.pathname.substring(1) === "signIn" && "block",
+						)}>
 						{t("user.signUp")}
 					</Link>
 				</div>
