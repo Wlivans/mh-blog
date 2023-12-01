@@ -14,8 +14,8 @@
 		"fullName": "用户名",
 		"email": "邮箱",
 		"password": "密码",
-		"signIn": "登录",
-		"signUp": "注册"
+		"login": "登录",
+		"register": "注册"
 	},
 	"regex": {
 		"fullname_length": "用户名长度至少为 3 个字母",

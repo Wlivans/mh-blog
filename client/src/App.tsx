@@ -6,8 +6,8 @@ function App() {
 	return (
 		<Routes>
 			<Route path="/" element={<Navbar />}>
-				<Route path="/signin" element={<UserAuthForm type="signIn" />} />
-				<Route path="/signup" element={<UserAuthForm type="signUp" />} />
+				<Route path="/login" element={<UserAuthForm type="login" />} />
+				<Route path="/register" element={<UserAuthForm type="register" />} />
 			</Route>
 		</Routes>
 	);

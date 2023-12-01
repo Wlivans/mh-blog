@@ -48,21 +48,18 @@ const Navbar = () => {
 					</Link>
 
 					<Link
-						to="/signin"
-						className={cn(
-							"btn-dark py-2",
-							location.pathname.substring(1) === "signIn" && "hidden",
-						)}>
-						{t("user.signIn")}
+						to="/login"
+						className={cn("btn-dark py-2", location.pathname.substring(1) === "login" && "hidden")}>
+						{t("user.login")}
 					</Link>
 
 					<Link
-						to="/signup"
+						to="/register"
 						className={cn(
 							"btn-light hidden py-2 md:block",
-							location.pathname.substring(1) === "signIn" && "block",
+							location.pathname.substring(1) === "login" && "block",
 						)}>
-						{t("user.signUp")}
+						{t("user.register")}
 					</Link>
 				</div>
 			</nav>

@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"target": "esnext", // 目标语言的版本
 		"module": "esnext", // 生成代码的模板标准
+		"types": ["vite/client"],
 		"lib": ["dom", "dom.iterable", "esnext", "ScriptHost"],
 		// 编译时引入的 ES 功能库，包括：es5 、es6、es7、dom 等。
 		//target 为 es6 时: ["dom", "es6", "dom.iterable", "scripthost"]

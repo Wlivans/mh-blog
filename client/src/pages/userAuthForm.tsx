@@ -4,23 +4,40 @@ import { useTranslation } from "react-i18next";
 import googleIcon from "../images/google.png";
 import { Link } from "react-router-dom";
 import AnimationWrapper from "@/common/pageAnimation";
-import { useRef } from "react";
+import { FormEvent } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/libs/types";
+import axios from "axios";
+import { setSession } from "@/common/session";
 
 type UserAuthFormProps = {
-	type: "signIn" | "signUp";
+	type: "login" | "register";
 };
 
 const UserAuthForm = ({ type }: UserAuthFormProps) => {
 	const { t } = useTranslation();
 
-	const authFormRef = useRef<HTMLFormElement | null>(null);
+	const useAuthThroughServer = (serverRoot: string, formData: { [key: string]: string }) => {
+		axios
+			.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoot, formData)
+			.then(({ data }) => {
+				setSession("user", JSON.stringify(data.data));
+				toast.success(data.message);
+			})
+			.catch((err) => {
+				const { response } = err;
+				const { data } = response;
+				toast.error(data.message);
+			});
+	};
 
-	const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+	const handleSubmit = (e: FormEvent<HTMLButtonElement>) => {
 		e.preventDefault();
 
-		const form = new FormData(authFormRef?.current!);
+		const serverRoute = type === "login" ? "/login" : "/register";
+
+		const formELe = document.getElementById("authForm") as HTMLFormElement;
+		const form = new FormData(formELe!);
 		const formData: any = {};
 
 		for (let [key, value] of form.entries()) {
@@ -29,7 +46,7 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
 
 		const { fullname, email, password } = formData;
 
-		if (type === "signUp" && fullname.length < 3) {
+		if (type === "register" && fullname.length < 3) {
 			return toast.error(t("regex.fullname_length"));
 		}
 
@@ -44,18 +61,20 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
 		if (!PASSWORD_REGEX.test(password)) {
 			return t("regex.password");
 		}
+
+		useAuthThroughServer(serverRoute, formData);
 	};
 
 	return (
 		<AnimationWrapper keyValue={type}>
 			<section className="h-cover flex items-center justify-center">
 				<Toaster />
-				<form ref={authFormRef} className="w-[80%] max-w-[400px]">
+				<form id="authForm" className="w-[80%] max-w-[400px]">
 					<h1 className="mb-24 font-gelasio text-4xl capitalize">
-						{t(type === "signIn" ? "welcome" : "account.joinUs")}
+						{t(type === "login" ? "welcome" : "account.joinUs")}
 					</h1>
 
-					{type !== "signIn" && (
+					{type !== "login" && (
 						<InputBox name="fullname" type="text" placeholder={t("user.fullName")} icon={User} />
 					)}
 
@@ -83,17 +102,17 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
 						{t("account.google")}
 					</button>
 
-					{type === "signIn" ? (
-						<p className="text-dark-grey mt-6 text-center text-xl">
+					{type === "login" ? (
+						<p className="mt-6 text-center text-xl text-dark-grey">
 							{t("account.havaAccount")}? &nbsp;
-							<Link to="/signUp" className="ml-1 text-xl text-black underline">
+							<Link to="/register" className="ml-1 text-xl text-black underline">
 								{t("account.joinUs")}
 							</Link>
 						</p>
 					) : (
-						<p className="text-dark-grey mt-6 text-center text-xl">
+						<p className="mt-6 text-center text-xl text-dark-grey">
 							{t("account.alreadyMember")}? &nbsp;
-							<Link to="/signIn" className="ml-1 text-xl text-black underline">
+							<Link to="/login" className="ml-1 text-xl text-black underline">
 								{t("account.signHere")}
 							</Link>
 						</p>
