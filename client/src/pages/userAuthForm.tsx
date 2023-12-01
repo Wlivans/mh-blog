@@ -2,13 +2,14 @@ import InputBox from "@/components/input";
 import { KeyRound, Mail, User } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import googleIcon from "../images/google.png";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import AnimationWrapper from "@/common/pageAnimation";
-import { FormEvent } from "react";
+import { FormEvent, useContext } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { EMAIL_REGEX, PASSWORD_REGEX } from "@/libs/types";
 import axios from "axios";
 import { setSession } from "@/common/session";
+import { UserContext } from "@/App";
 
 type UserAuthFormProps = {
 	type: "login" | "register";
@@ -17,16 +18,24 @@ type UserAuthFormProps = {
 const UserAuthForm = ({ type }: UserAuthFormProps) => {
 	const { t } = useTranslation();
 
+	const {
+		userAuth: { access_token },
+		setUserAuth,
+	} = useContext(UserContext) as any;
+
 	const useAuthThroughServer = (serverRoot: string, formData: { [key: string]: string }) => {
 		axios
 			.post(import.meta.env.VITE_SERVER_DOMAIN + serverRoot, formData)
 			.then(({ data }) => {
 				setSession("user", JSON.stringify(data.data));
+				setUserAuth(data.data);
+
 				toast.success(data.message);
 			})
 			.catch((err) => {
 				const { response } = err;
 				const { data } = response;
+
 				toast.error(data.message);
 			});
 	};
@@ -65,7 +74,9 @@ const UserAuthForm = ({ type }: UserAuthFormProps) => {
 		useAuthThroughServer(serverRoute, formData);
 	};
 
-	return (
+	return access_token ? (
+		<Navigate to="/" />
+	) : (
 		<AnimationWrapper keyValue={type}>
 			<section className="h-cover flex items-center justify-center">
 				<Toaster />
