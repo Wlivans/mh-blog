@@ -5,6 +5,7 @@ import bcrypt from "bcrypt";
 import User from "./Schema/User.js";
 import { nanoid } from "nanoid";
 import jwt from "jsonwebtoken";
+import cors from "cors";
 
 const server = express();
 const PORT = 8888;
@@ -13,7 +14,7 @@ const emailRegex = /^[^\u4e00-\u9fa5]+@[a-zA-Z0-9._-]+\.[a-zA-Z]{2,}$/; // regex
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,20}$/; // regex for password
 
 server.use(express.json());
-
+server.use(cors());
 mongoose.connect(process.env.DB_LOCATION, {
   autoIndex: true,
 });
@@ -46,7 +47,7 @@ const generateHash = async (email) => {
   return username;
 };
 
-server.post("/signup", (req, res) => {
+server.post("/register", (req, res) => {
   const { fullname, email, password } = req.body;
 
   if (fullname.length < 3) {
@@ -122,7 +123,7 @@ server.post("/signup", (req, res) => {
   });
 });
 
-server.post("/signin", (req, res) => {
+server.post("/login", (req, res) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
