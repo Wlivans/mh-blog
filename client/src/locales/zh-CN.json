@@ -3,6 +3,9 @@
 	"write": "编写",
 	"welcome": "欢迎回来",
 	"or": "或",
+	"profile": "个人中心",
+	"bashboard": "控制台",
+	"settings": "设置",
 	"account": {
 		"joinUs": "加入我们",
 		"havaAccount": "需要新的账号",
@@ -15,6 +18,7 @@
 		"email": "邮箱",
 		"password": "密码",
 		"login": "登录",
+		"logout": "退出",
 		"register": "注册"
 	},
 	"regex": {

@@ -16,10 +16,15 @@ const Navbar = () => {
 	} = useContext(UserContext) as any;
 
 	const [searchBoxVisibility, setSearchBoxVisibility] = useState(false);
+	const [userNavPanel, setUserNavPanel] = useState(false);
 
 	const handleShowSearchBox = () => {
 		setSearchBoxVisibility((val) => !val);
 	};
+
+	const handleUserNavPanel = () => setUserNavPanel((val) => !val);
+
+	const handleUserPanleBlur = () => setUserNavPanel(false);
 
 	return (
 		<>
@@ -60,7 +65,7 @@ const Navbar = () => {
 									<Bell className="h-6 w-6" />
 								</button>
 							</Link>
-							<div className="relative">
+							<div className="relative" onClick={handleUserNavPanel} onBlur={handleUserPanleBlur}>
 								<button className="mt-1 h-12 w-12">
 									<img
 										src={profile_img}
@@ -68,7 +73,7 @@ const Navbar = () => {
 										alt=""
 									/>
 								</button>
-								<UserNavigationPanel />
+								{userNavPanel && <UserNavigationPanel />}
 							</div>
 						</>
 					) : (

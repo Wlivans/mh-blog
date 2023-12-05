@@ -3,6 +3,9 @@
 	"write": "Write",
 	"welcome": "Welcome back",
 	"or": "or",
+	"profile": "Profile",
+	"bashboard": "Dashboard",
+	"settings": "Settings",
 	"account": {
 		"joinUs": "Join us today",
 		"havaAccount": "Don't hava an account",
@@ -15,6 +18,7 @@
 		"email": "Email",
 		"password": "Password",
 		"login": "Login",
+		"logout": "LogOut",
 		"register": "Register"
 	},
 	"regex": {
